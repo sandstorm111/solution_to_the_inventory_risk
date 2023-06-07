@@ -9,16 +9,16 @@ import math
 #https://arxiv.org/pdf/1105.3115.pdf
 
 ## BASIC VARIABLES
-max_inventory_Q = 10
+max_inventory_Q = 30
 min_inventory_Q = -max_inventory_Q
 iterations_reference = 2 * max_inventory_Q + 1
-sigma = 0.04
+sigma = 0.3
 A = 0.9
-kappa = 0.23
+kappa = 0.3
 gamma =  0.01
-T = 300
-dt = 5
-u = 0.98
+T = 600
+dt = 1
+u = 1.0
 
 ## ALPHA, Nill
 alpha = kappa / 2 * gamma * sigma ** 2
@@ -104,20 +104,19 @@ for t in range(0, T  , 1):
     dict_ask[min_inventory_Q] = None
     dict_ask[max_inventory_Q] = dict_bid[min_inventory_Q]
 
-    list_evolution_bid.append(list(dict_bid.values()))
-    list_evolution_ask.append(list(dict_ask.values()))
+    list_evolution_bid.append(list(dict_bid.values())[1:-2])
 
 # Plotting 
-X = np.arange(1, T + 1)
-Y = np.arange(min_inventory_Q, max_inventory_Q+1 , 1)
+X = np.arange(1, T+1, 1)
+Y = np.arange(min_inventory_Q+1, max_inventory_Q-1 , 1)
 X, Y = np.meshgrid(X, Y)
-Y = np.rot90(Y,2)
 
 Z = np.array(list_evolution_bid).T
-Z = np.array(list_evolution_ask).T
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='hot', linewidth=0, antialiased=False)
+ax.invert_xaxis()
+
 plt.show()

@@ -9,15 +9,15 @@ import math
 #https://arxiv.org/pdf/1105.3115.pdf
 
 ## BASIC VARIABLES
-max_inventory_Q = 10
+max_inventory_Q = 30
 min_inventory_Q = -max_inventory_Q
 iterations_reference = 2 * max_inventory_Q + 1
-sigma = 0.4
-A = 0.8
-kappa = 0.210
-gamma =  0.4
-T = 60
-dt = 5
+sigma = 0.3
+A = 0.9
+kappa = 0.3
+gamma =  0.01
+T = 600
+dt = 1
 
 ## ALPHA, Nill
 alpha = kappa / 2 * gamma * sigma ** 2
@@ -80,8 +80,7 @@ assert len(last_row) == iterations_reference
 # Converting to numpy array
 matrix_M = np.matrix(matrix_M)
 
-
-# Simulating negative inventory
+# Simulating quotes
 list_evolution_bid = []
 for t in range(0, T  , 1):
     dict_bid = {}
@@ -103,28 +102,19 @@ for t in range(0, T  , 1):
     dict_ask[min_inventory_Q] = None
     dict_ask[max_inventory_Q] = dict_bid[min_inventory_Q]
 
-    list_evolution_bid.append(list(dict_bid.values()))
+    list_evolution_bid.append(list(dict_bid.values())[1:-2])
 
 # Plotting 
-X = np.arange(1, T + 1)
-Y = np.arange(min_inventory_Q, max_inventory_Q+1 , 1)
+X = np.arange(1, T+1, 1)
+Y = np.arange(min_inventory_Q+1, max_inventory_Q-1 , 1)
 X, Y = np.meshgrid(X, Y)
-Y = np.rot90(Y,2)
-
-#Z1 = np.matrix(list_evolution_bid_negative)
-#Z2 = np.matrix(list_evolution_bid_positive)
 
 Z = np.array(list_evolution_bid).T
-
-
-#Y = np.rot90(Y, 2)
-#X = np.rot90(X, 2)
-#Z = np.rot90(Z, 2)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='hot', linewidth=0, antialiased=False)
-#ax.invert_yaxis()
-#
+ax.invert_xaxis()
+
 plt.show()
