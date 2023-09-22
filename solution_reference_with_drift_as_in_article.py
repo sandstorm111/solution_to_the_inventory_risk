@@ -18,7 +18,7 @@ kappa = 0.3
 gamma =  0.01
 T = 600
 dt = 1
-u = 1.0
+u = 1.02
 
 ## ALPHA, Nill
 alpha = kappa / 2 * gamma * sigma ** 2

@@ -12,6 +12,7 @@ import math
 max_inventory_Q = 30
 min_inventory_Q = -max_inventory_Q
 iterations_reference = 2 * max_inventory_Q + 1
+#sigma = 0.3
 sigma = 0.3
 A = 0.9
 kappa = 0.3
